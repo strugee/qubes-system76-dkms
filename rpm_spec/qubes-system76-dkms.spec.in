@@ -1,0 +1,51 @@
+%define module system76
+
+Name:		qubes-%{module}-dkms
+Version:        @VERSION@
+Release:	1%{?dist}
+Summary:	Qubes OS port of the System76 DKMS driver
+
+Group:		System Environment/Kernel
+License:	GPLv2.0
+URL:		https://github.com/pop-os/system76-dkms
+
+Requires:	dkms
+Requires:       gcc, make
+Requires:       kernel-devel
+BuildArch:      noarch
+Source0: %{name}-%{version}.tar.gz
+
+%description
+ This DKMS driver provides airplane mode, keyboard backlight, and fan support
+ for System76 laptops
+
+%prep
+%autosetup
+
+%build
+
+%install
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/usr/src/
+cp -rf ${RPM_BUILD_DIR}/%{name}-%{version} $RPM_BUILD_ROOT/usr/src/%{module}-%{version}
+rm -r $RPM_BUILD_ROOT/usr/src/%{module}-%{version}/{debian,rpm_spec,Makefile.builder}
+
+%files
+%defattr(-,root,root,-)
+/usr/src/%{module}-%{version}
+#%doc LICENSE
+%changelog
+@CHANGELOG@
+
+%post
+# Code modified from https://github.com/zfsonlinux/zfs/blob/master/rpm/generic/zfs-dkms.spec.in
+POSTINST=/usr/lib/dkms/common.postinst
+if [ -f $POSTINST ]; then
+    $POSTINST %{module} %{version}
+    exit $?
+fi
+echo 'WARNING: $POSTINST does not exist."
+echo -e "ERROR: DKMS version is too old."
+exit 1
+
+# TODO see if we need the %preun from ZFS on Linux too
