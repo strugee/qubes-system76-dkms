@@ -39,6 +39,7 @@ cp -rf ${RPM_BUILD_DIR}/%{name}-%{version}/lib $RPM_BUILD_ROOT/
 /lib/udev/hwdb.d/99-system76-dkms.hwdb
 %license LICENSE
 %doc changelog.upstream
+%doc README.md.upstream
 
 %changelog
 * Tue Jan 28 2020 AJ Jordan <alex@strugee.net> - 1.0.6-1
