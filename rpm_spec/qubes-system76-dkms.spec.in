@@ -32,6 +32,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/src/%{module}-%{version}/
 cp ${RPM_BUILD_DIR}/%{name}-%{version}/*.c $RPM_BUILD_ROOT/usr/src/%{module}-%{version}
 cp ${RPM_BUILD_DIR}/%{name}-%{version}/{Makefile,dkms.conf} $RPM_BUILD_ROOT/usr/src/%{module}-%{version}
 cp -rf ${RPM_BUILD_DIR}/%{name}-%{version}/lib $RPM_BUILD_ROOT/
+sed -i 's/__RPM_PACKAGE_VERSION__/%{version}/' $RPM_BUILD_ROOT/usr/src/%{module}-%{version}/dkms.conf
 
 %files
 %defattr(-,root,root,-)
